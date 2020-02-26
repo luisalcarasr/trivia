@@ -1,0 +1,16 @@
+.categories-list {
+  align-content: center;
+  justify-content: center;
+  list-style: none;
+}
+
+.categories-list li {
+  justify-content: center;
+  align-content: center;
+  margin-bottom: 1rem;
+}
+
+#categories {
+  margin-bottom: 1rem;
+  margin-top: 1rem !important;
+}

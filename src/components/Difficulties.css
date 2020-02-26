@@ -1,0 +1,11 @@
+.difficulties-list {
+  align-content: center;
+  justify-content: center;
+  list-style: none;
+}
+
+.difficulties-list li {
+  justify-content: center;
+  align-content: center;
+  margin-bottom: 1rem;
+}
