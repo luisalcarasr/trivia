@@ -16,11 +16,11 @@ const Category = (props) => {
     if (LOAD_IMAGES) {
       getImageByKeyword(title).then(setPhoto);
     }
-  }, []);
+  }, [title, setPhoto]);
 
   useEffect(() => {
     translate(originalTitle, languageCode).then(setTitle);
-  });
+  }, [setTitle, languageCode, originalTitle]);
 
   return (
     <Card onClick={props.onClick}>

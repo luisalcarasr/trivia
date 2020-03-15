@@ -1,52 +1,38 @@
-import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
-import './Difficulties.css'
+import React from 'react';
+import { Button, Grid, Icon, Modal } from 'semantic-ui-react';
 
-
-class Difficulties extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      difficulties: [
-        {
-          id: 'easy',
-          name: 'Easy'
-        },
-        {
-          id: 'medium',
-          name: 'Medium'
-        },
-        {
-          id: 'hard',
-          name: 'Hard'
-        }
-      ]
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        <ul className="difficulties-list">
-          {
-            this.state.difficulties.map(
-              difficulty => { 
-                return (
-                  <li key ={difficulty.id}>
-                    <Button onClick={() => this.props.onChange(difficulty) }>
-                      {difficulty.name}
-                    </Button>
-                  </li>
-                )
-              }
-            )
-          }
-        </ul>
-      </div>
-    );
-  }
-
-}
+const Difficulties = (props) => {
+  return (
+    <Modal open={props.open} dimmer="blurring" onClose={() => props.onCancel()}>
+      <Modal.Header>Select a Level</Modal.Header>
+      <Modal.Content>
+        <Grid columns={3}>
+          <Grid.Row>
+            <Grid.Column textAlign="center">
+              <Button icon labelPosition={"left"} size="large" onClick={() => props.onChange('easy')} primary>
+                <Icon name="bookmark"/>
+                Easy
+              </Button>
+            </Grid.Column>
+            <Grid.Column textAlign="center">
+              <Button icon labelPosition={"left"} size="large" onClick={() => props.onChange('medium')}
+                      color="green">
+                <Icon name="trophy"/>
+                Medium
+              </Button>
+            </Grid.Column>
+            <Grid.Column textAlign="center">
+              <Button icon labelPosition={"left"} size="large" onClick={() => this.props.onChange('hard')}
+                      color="red">
+                <Icon name="diamond"/>
+                Hard
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Modal.Content>
+    </Modal>
+  );
+};
 
 export default Difficulties;

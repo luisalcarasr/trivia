@@ -20,7 +20,7 @@ const LanguageDropdown = () => {
         }
       }));
     });
-  },[]);
+  },[currentLanguageCode]);
 
   return <Dropdown
     button

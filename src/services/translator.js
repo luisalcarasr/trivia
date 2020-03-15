@@ -1,6 +1,5 @@
-import { translator } from "./remotes";
 import { YARDEX_TRANSLATOR_KEY } from "./keys";
-import {useSelector} from "react-redux";
+import { translator } from "./remotes";
 
 
 const translate = async (text, languageCode) => {
@@ -43,4 +42,4 @@ const getLanguages = async (languageCode) => {
   return languages;
 };
 
-export { translate, getLanguages }
+export { translate, getLanguages };

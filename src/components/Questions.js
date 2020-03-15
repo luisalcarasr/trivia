@@ -62,7 +62,6 @@ class Questions extends Component {
   }
 
   componentDidMount() {
-    alert(JSON.stringify(this.context));
     this.fetchQuestions();
   }
 
