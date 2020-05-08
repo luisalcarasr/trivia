@@ -4,6 +4,7 @@ import { request } from 'axios';
 import Question from './Question';
 import { AllHtmlEntities } from 'html-entities';
 import { Progress } from 'semantic-ui-react';
+import Results from './Results';
 
 const parser = new AllHtmlEntities();
 
@@ -65,8 +66,7 @@ class Questions extends Component {
             answers={this.state.answers}
             correctAnswer={this.state.correctAnswer}
             onAnswer={this.answerQuestion} />
-          :
-          this.state.points
+          : <Results points={this.state.points} total={this.state.items.length}></Results> 
         }
       </div>
     )
