@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Button } from 'semantic-ui-react';
 import { shuffle } from 'lodash';
 import { request } from 'axios';
+import Question from './Question';
+import { AllHtmlEntities } from 'html-entities';
+import { Progress } from 'semantic-ui-react';
+
+const parser = new AllHtmlEntities();
 
 class Questions extends Component {
 
@@ -23,15 +27,20 @@ class Questions extends Component {
     if (item !== undefined) {
       this.setState({
         indexOfQuestion: indexOfQuestion,
-        question: item.question,
-        answers: shuffle([item.correct_answer, ...item.incorrect_answers]),
-        correctAnswer: item.correct_answer
+        question: parser.decode(item.question),
+        answers: shuffle([item.correct_answer, ...item.incorrect_answers]).map(parser.decode),
+        correctAnswer: parser.decode(item.correct_answer)
+      });
+    } 
+    if (this.progress < 100) {
+      this.setState({
+        indexOfQuestion: indexOfQuestion
       });
     }
   }
 
-  answerQuestion(answer) {
-    if (this.state.correctAnswer === answer) {
+  answerQuestion = (isCorrect) => {
+    if (isCorrect) {
       this.setState({
         points: this.state.points + 1
       })
@@ -39,23 +48,25 @@ class Questions extends Component {
     this.nextQuestion();
   }
 
+  get progress() {
+    let progress = (100 / this.state.items.length) * (this.state.indexOfQuestion);
+    progress = progress === Infinity || progress < 0 ? 0 : progress;
+    return Math.round(progress);
+  }
+
   render() {
+    console.log(this.state.items.length, this.state.indexOfQuestion, this.progress);
     return (
       <div>
-        {this.state.points}
-        <Card>
-          <Card.Content>
-            <Card.Description>
-              <h4>{ this.state.question }</h4>
-            </Card.Description>
-          </Card.Content>
-        </Card>
-        {
-          this.state.answers.map((answer, index) => { 
-            return <Button key={index} onClick={() => this.answerQuestion(answer)}>
-              {answer}
-            </Button>
-          })
+        <Progress percent={this.progress} inverted color="blue" progress />
+        { this.progress < 100
+          ? <Question 
+            text={this.state.question}
+            answers={this.state.answers}
+            correctAnswer={this.state.correctAnswer}
+            onAnswer={this.answerQuestion} />
+          :
+          this.state.points
         }
       </div>
     )
