@@ -56,7 +56,6 @@ class Questions extends Component {
   }
 
   render() {
-    console.log(this.state.items.length, this.state.indexOfQuestion, this.progress);
     return (
       <div>
         <Progress percent={this.progress} inverted color="blue" progress />

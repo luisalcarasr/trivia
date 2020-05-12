@@ -12,7 +12,6 @@ const translate = async (text, languageCode) => {
         lang: `en-${languageCode}`,
       }
     });
-    console.log(response);
     return response.status === 200 ? response.data.text.join('') : text;
   } else {
     return text;

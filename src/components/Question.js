@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button } from 'semantic-ui-react';
 import './Question.css';
+import { useSelector } from 'react-redux';
+import { translate } from '../services/translator';
 
 const Question = (props) => {
-  const [text, setText] = useState(props.text);
-  const [answers, setAnswers] = useState(props.answers);
-  const [correctAnswer, setCorrectAnswer] = useState(props.correctAnswer);
+  const [text, setText] = useState();
+  const [answers, setAnswers] = useState([]);
+  const [correctAnswer, setCorrectAnswer] = useState();
   const [isCorrect, setIsCorrect] = useState(null);
   const [selectedAnswer, setAnswer] = useState(null); 
 
+  const languageCode = useSelector(state => state.language);
+
   useEffect(() => {
-    setText(props.text);
-    setAnswers(props.answers);
-    setCorrectAnswer(props.correctAnswer);
+
+    (async () => {
+      let texts = [];
+      for (const answer of props.answers) {
+        texts.push(await translate(answer, languageCode));
+      }
+      console.log(texts);
+      setAnswers(texts);
+    })();
+
+    translate(props.text, languageCode).then(setText);
+    translate(props.correctAnswer, languageCode).then(setCorrectAnswer);
+
     setIsCorrect(null);
     setAnswer(null);
-  }, [props]);
+  }, [props, languageCode]);
 
   const answerQuestion = (answer) => {
     setIsCorrect(correctAnswer === answer);
