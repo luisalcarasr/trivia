@@ -14,26 +14,27 @@ function App() {
   const [difficulty, setDifficulty] = useState({});
   const [amount, setAmount] = useState(0);
 
+  const categoryChangeHandler = (category) => {
+    setCategory(category);
+    setStep(1);
+  }
+
+  const cancelDifficultySelectionHandler = () => {
+    setDifficulty(difficulty);
+    setAmount(getAmountByDifficulty(difficulty));
+    setStep(2);
+  }
+
   return (
     <Container className="main-container">
       <Navbar/>
       <div id="content">
         {
-          step <= 1 && <Categories onChange={category => {
-            setCategory(category);
-            setStep(1);
-          }}/>
+          step <= 1 && <Categories onChange={categoryChangeHandler}/>
         }
+        <Difficulties open={step === 1} onCancel={() => setStep(0)} onChange={cancelDifficultySelectionHandler}/>
         {
-          <Difficulties open={step === 1} onCancel={() => setStep(0)} onChange={difficulty => {
-            setDifficulty(difficulty);
-            setAmount(getAmountByDifficulty(difficulty));
-            setStep(2);
-          }}/>
-        }
-        {
-          step === 2 &&
-          <Questions category={category} difficulty={difficulty} amount={amount}/>
+          step === 2 && <Questions category={category} difficulty={difficulty} amount={amount}/>
         }
       </div>
     </Container>
