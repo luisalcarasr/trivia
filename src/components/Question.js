@@ -1,41 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Button } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Button, Card } from 'semantic-ui-react';
 import './Question.css';
-import { useSelector } from 'react-redux';
-import { translate } from '../services/translator';
 
-const Question = (props) => {
-  const [text, setText] = useState();
-  const [answers, setAnswers] = useState([]);
-  const [correctAnswer, setCorrectAnswer] = useState();
+const Question = ({ text, answers, correctAnswer, onAnswer }) => {
   const [isCorrect, setIsCorrect] = useState(null);
-  const [selectedAnswer, setAnswer] = useState(null); 
-
-  const languageCode = useSelector(state => state.language);
-
-  useEffect(() => {
-
-    (async () => {
-      let texts = [];
-      for (const answer of props.answers) {
-        texts.push(await translate(answer, languageCode));
-      }
-      console.log(texts);
-      setAnswers(texts);
-    })();
-
-    translate(props.text, languageCode).then(setText);
-    translate(props.correctAnswer, languageCode).then(setCorrectAnswer);
-
-    setIsCorrect(null);
-    setAnswer(null);
-  }, [props, languageCode]);
+  const [selectedAnswer, setAnswer] = useState(null);
 
   const answerQuestion = (answer) => {
     setIsCorrect(correctAnswer === answer);
     setAnswer(answer);
-    setTimeout(() => props.onAnswer(correctAnswer === answer), 1000);
+    setTimeout(() => {
+      onAnswer(correctAnswer === answer)
+      setAnswer(null)
+    }, 1000);
   }
+
+  console.log(text, answers, correctAnswer)
 
   return (
     <div>
@@ -47,8 +27,8 @@ const Question = (props) => {
         </Card.Content>
       </Card>
       {
-        answers.map((answer, index) => 
-          <Button 
+        answers.map((answer, index) =>
+          <Button
             positive={!!selectedAnswer && answer === correctAnswer}
             negative={!isCorrect && answer === selectedAnswer}
             key={index}
